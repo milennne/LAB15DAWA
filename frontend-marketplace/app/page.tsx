@@ -40,15 +40,15 @@ export default function HomePage() {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-6">Productos</h1>
+      <h1 className="text-3xl font-bold text-gray-900 mb-6">Productos</h1>
       <div className="flex gap-2 mb-6 flex-wrap">
         <button onClick={() => setSelectedCategory(null)}
-          className={`px-4 py-2 rounded ${!selectedCategory ? 'bg-blue-600 text-white' : 'bg-gray-200'}`}>
+          className={`px-4 py-2 rounded font-medium ${!selectedCategory ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-800'}`}>
           Todos
         </button>
         {categories.map(cat => (
           <button key={cat.id} onClick={() => setSelectedCategory(cat.id)}
-            className={`px-4 py-2 rounded ${selectedCategory === cat.id ? 'bg-blue-600 text-white' : 'bg-gray-200'}`}>
+            className={`px-4 py-2 rounded font-medium ${selectedCategory === cat.id ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-800'}`}>
             {cat.nombre}
           </button>
         ))}
@@ -56,13 +56,15 @@ export default function HomePage() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {filtered.map(product => (
           <Link href={`/products/${product.id}`} key={product.id}>
-            <div className="border rounded-lg p-4 hover:shadow-lg transition">
+            <div className="bg-white border border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition">
               {product.imageUrl && (
-                <img src={product.imageUrl} alt={product.nombre} className="w-full h-48 object-cover rounded mb-3" />
+                <img src={product.imageUrl} alt={product.nombre} className="w-full h-48 object-cover" />
               )}
-              <h2 className="text-xl font-semibold">{product.nombre}</h2>
-              <p className="text-gray-600">{product.descripcion}</p>
-              <p className="text-blue-600 font-bold mt-2">S/. {product.precio}</p>
+              <div className="p-4">
+                <h2 className="text-xl font-semibold text-gray-900">{product.nombre}</h2>
+                <p className="text-gray-600 text-sm mt-1">{product.descripcion}</p>
+                <p className="text-blue-600 font-bold mt-2">S/. {product.precio}</p>
+              </div>
             </div>
           </Link>
         ))}
