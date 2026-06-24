@@ -37,7 +37,7 @@ export default async function ProductDetailPage({
       <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
         <div className="grid grid-cols-1 md:grid-cols-2">
           {product.imageUrl ? (
-            <div className="h-72 md:h-full min-h-72">
+            <div className="h-72 md:h-96">
               <img
                 src={product.imageUrl}
                 alt={product.nombre}
@@ -50,7 +50,7 @@ export default async function ProductDetailPage({
             </div>
           )}
 
-          <div className="p-8 flex flex-col justify-between gap-6">
+          <div className="p-8 flex flex-col gap-5">
             <div>
               <span className="text-xs font-semibold text-blue-600 bg-blue-50 px-3 py-1 rounded-full">
                 Producto #{product.id}
