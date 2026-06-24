@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Cookies from 'js-cookie';
 import { Product } from '@/types/product';
+const API = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api';
 
 interface Category {
   id: number;
