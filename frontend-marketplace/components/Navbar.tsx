@@ -10,20 +10,19 @@ export default function Navbar() {
 
   useEffect(() => {
     const checkUser = () => {
-        const userCookie = Cookies.get('user');
-        if (userCookie) {
+      const userCookie = Cookies.get('user');
+      if (userCookie) {
         try {
-            setUser(JSON.parse(userCookie));
+          setUser(JSON.parse(userCookie));
         } catch {
-            console.error('Error parsing user cookie');
+          console.error('Error parsing user cookie');
         }
-        }
+      }
     };
-    
     checkUser();
     window.addEventListener('focus', checkUser);
     return () => window.removeEventListener('focus', checkUser);
-    }, []);
+  }, []);
 
   const handleLogout = () => {
     Cookies.remove('token');
@@ -33,21 +32,35 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="bg-blue-600 text-white px-6 py-4 flex justify-between items-center">
-      <Link href="/" className="text-xl font-bold">
-        🛒 Mini Marketplace
-      </Link>
-      <div className="flex gap-4 items-center">
-        <Link href="/" className="hover:underline">Inicio</Link>
-        {user?.rol === 'ADMIN' && (
-          <Link href="/admin" className="hover:underline">Admin</Link>
-        )}
-        {user && (
-          <span className="text-sm">Hola, {user.nombre} ({user.rol})</span>
-        )}
-        <button onClick={handleLogout} className="bg-white text-blue-600 px-3 py-1 rounded hover:bg-gray-100">
-          Cerrar sesión
-        </button>
+    <nav className="bg-white border-b border-gray-100 shadow-sm sticky top-0 z-50">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between items-center h-16">
+          <Link href="/" className="flex items-center gap-2 text-blue-600 font-bold text-xl tracking-tight">
+            🛒 <span>Mini Marketplace</span>
+          </Link>
+          <div className="flex items-center gap-4">
+            <Link href="/" className="text-gray-500 hover:text-blue-600 transition-colors text-sm font-medium">
+              Inicio
+            </Link>
+            {user?.rol === 'ADMIN' && (
+              <Link href="/admin" className="text-gray-500 hover:text-blue-600 transition-colors text-sm font-medium">
+                Admin
+              </Link>
+            )}
+            {user && (
+              <span className="hidden sm:inline-flex items-center gap-1 bg-blue-50 text-blue-700 text-xs font-semibold px-3 py-1.5 rounded-full border border-blue-100">
+                {user.nombre}
+                <span className="opacity-60">· {user.rol}</span>
+              </span>
+            )}
+            <button
+              onClick={handleLogout}
+              className="bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium px-4 py-2 rounded-lg transition-colors"
+            >
+              Cerrar sesión
+            </button>
+          </div>
+        </div>
       </div>
     </nav>
   );

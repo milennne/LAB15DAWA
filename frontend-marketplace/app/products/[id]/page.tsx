@@ -6,12 +6,8 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api';
 
 async function getProduct(id: string): Promise<Product | null> {
   try {
-    const res = await fetch(`${API_URL}/products/${id}`, {
-      cache: 'no-store',
-    });
-
+    const res = await fetch(`${API_URL}/products/${id}`, { cache: 'no-store' });
     if (!res.ok) return null;
-
     const data: ApiResponse<Product> = await res.json();
     return data.success ? data.data : null;
   } catch (error) {
@@ -27,46 +23,63 @@ export default async function ProductDetailPage({
 }) {
   const { id } = await params;
   const product = await getProduct(id);
-
-  if (!product) {
-    notFound();
-  }
+  if (!product) notFound();
 
   return (
-    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
       <Link
         href="/"
-        className="inline-block mb-6 text-gray-600 hover:text-gray-900 transition-colors"
+        className="inline-flex items-center gap-1 text-sm text-gray-500 hover:text-blue-600 transition-colors mb-8 font-medium"
       >
-        &larr; Volver a productos
+        ← Volver a productos
       </Link>
 
-      <div className="bg-white border border-gray-200 rounded-lg p-8">
-        {product.imageUrl && (
-            <img src={product.imageUrl} alt={product.nombre} 
-            className="w-full h-64 object-cover rounded-lg mb-6" />
-        )}
-        <h1 className="text-4xl font-bold text-gray-900 mb-4">
-          {product.nombre}
-        </h1>
+      <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+        <div className="grid grid-cols-1 md:grid-cols-2">
+          {product.imageUrl ? (
+            <div className="h-72 md:h-full min-h-72">
+              <img
+                src={product.imageUrl}
+                alt={product.nombre}
+                className="w-full h-full object-cover"
+              />
+            </div>
+          ) : (
+            <div className="h-72 bg-slate-100 flex items-center justify-center">
+              <span className="text-slate-400 text-6xl">📷</span>
+            </div>
+          )}
 
-        <div className="text-3xl font-bold text-gray-900 mb-6">
-          $/ {product.precio}
-        </div>
+          <div className="p-8 flex flex-col justify-between gap-6">
+            <div>
+              <span className="text-xs font-semibold text-blue-600 bg-blue-50 px-3 py-1 rounded-full">
+                Producto #{product.id}
+              </span>
+              <h1 className="text-3xl font-bold text-gray-900 mt-4 leading-tight">
+                {product.nombre}
+              </h1>
+              {product.descripcion && (
+                <p className="text-gray-500 mt-4 leading-relaxed text-sm">
+                  {product.descripcion}
+                </p>
+              )}
+            </div>
 
-        {product.descripcion && (
-          <div className="mb-6">
-            <h2 className="text-lg font-semibold text-gray-900 mb-2">
-              Descripción
-            </h2>
-            <p className="text-gray-600 leading-relaxed">
-              {product.descripcion}
-            </p>
+            <div>
+              <div className="text-4xl font-bold text-blue-600">
+                S/. {product.precio}
+              </div>
+              <p className="text-xs text-gray-400 mt-1">Precio incluye IGV</p>
+              <div className="mt-6 flex gap-3">
+                <Link
+                  href="/"
+                  className="flex-1 text-center border border-gray-200 text-gray-700 font-medium py-3 rounded-xl hover:bg-gray-50 transition-colors text-sm"
+                >
+                  ← Seguir comprando
+                </Link>
+              </div>
+            </div>
           </div>
-        )}
-
-        <div className="pt-6 border-t border-gray-200 text-sm text-gray-500">
-          ID del producto: {product.id}
         </div>
       </div>
     </div>
